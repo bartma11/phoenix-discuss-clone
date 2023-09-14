@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Import materialize.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--Import app.css from assets-->
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <!--Import app.js from assets-->
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}></script>
+    <script>
+      <%= if @conn.assigns.user do %>
+        window.userToken = "<%= Phoenix.Token.sign(DiscussWeb.Endpoint, "key", @conn.assigns.user.id) %>"
+      <% end %>
+    </script>
+  </head>
+  <nav class="light-blue">
+    <div class="nav-wrapper container">
+      <a href="/topics" class="brand-logo">
+        Disscusions
+      </a>
+      <ul class="right">
+        <%= if @conn.assigns[:user] do %>
+          <li>
+            <%= link "Sign out",  to: path(@conn, DiscussWeb.Router, ~p"/auth/signout") %>
+          </li>
+        <% else %>
+          <li>
+            <%= link "Sign in with Github", to: path(@conn, DiscussWeb.Router, ~p"/auth/github")%>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+  <body>
+    <%= @inner_content %>
+  </body>
+</html>

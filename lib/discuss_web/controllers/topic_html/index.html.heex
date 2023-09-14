@@ -1,0 +1,26 @@
+<h5>Topics</h5>
+
+<ul class="collection">
+ <%= for topic <- @topics do %>
+  <li class="collection-item">
+    <%= link topic.title, to: path(@conn, DiscussWeb.Router, ~p"/topics/#{topic.id}") %>
+
+    <%= if (@conn.assigns.user && @conn.assigns.user.id == topic.user_id) do %>
+      <div class="right">
+        <%= link to: path(@conn, DiscussWeb.Router, ~p"/topics/#{topic.id}/edit") do %>
+          <i class="small material-icons">edit</i>
+        <% end %>
+        <%= link to: path(@conn, DiscussWeb.Router, ~p"/topics/#{topic.id}"), class: "red-text", method: :delete do %>
+          <i class="small material-icons">delete</i>
+        <% end %>
+      </div>
+    <% end %>
+  </li>
+ <% end %>
+</ul>
+
+<div class="fixed-action-btn">
+  <%= link to: path(@conn, DiscussWeb.Router, ~p"/topics/new"), class: "btn-floating btn-large waves-effect waves-light red" do %>
+   <i class="material-icons">add</i>
+  <% end %>
+</div>
